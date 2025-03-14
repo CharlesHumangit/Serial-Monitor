@@ -398,3 +398,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# ignore all files in the obj/Debug folder
+Serial Monitor/obj/Debug/*
