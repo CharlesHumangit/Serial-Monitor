@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>sales_percentage_store_online_shopping_commerce_monitor_icon_255538.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -108,6 +111,16 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\App icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coding_code_binary_codes_icon_262245.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="coding_code_binary_codes_icon_262245.ico" />
+    <Content Include="sales_percentage_store_online_shopping_commerce_monitor_icon_255538.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -34,7 +34,7 @@ namespace Serial_Monitor
             return ports;
         }
 
-        private SerialPort serialPort;
+        public SerialPort serialPort;
 
         // Function to connect to the selected port
         public bool ConnectToPort(string portName, int baudRate = 9600)
@@ -52,13 +52,15 @@ namespace Serial_Monitor
                     Handshake = Handshake.None
                 };
 
+                serialPort.DataReceived += SerialPort_DataReceived;
+
                 // Open the port
                 serialPort.Open();
                 if (serialPort.IsOpen)
                 {
-                    Console.WriteLine($"Successfully connected to {portName}");
+                    Console.WriteLine($"Successfully connected to {portName}");                  
                     return true; // Connection successful
-                }
+                }             
             }
             catch (Exception ex)
             {
@@ -75,6 +77,19 @@ namespace Serial_Monitor
             {
                 serialPort.Close();
                 Console.WriteLine("Disconnected from the port.");
+            }
+        }
+
+        public delegate void EventHandler(string data); // Delegate definition
+        public event EventHandler SerialDataReceived; // Event declaration
+
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string data = serialPort.ReadExisting();
+
+            if (SerialDataReceived != null) // Check if there are subscribers
+            {
+                SerialDataReceived(data);
             }
         }
     }
