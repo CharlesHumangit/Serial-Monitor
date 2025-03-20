@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO.Ports;
 using Microsoft.Win32;
 
@@ -91,6 +88,11 @@ namespace Serial_Monitor
             {
                 SerialDataReceived(data);
             }
+        }
+
+        public bool UpdateConnectionStatus()
+        {            
+            return serialPort.IsOpen;
         }
     }
 }
