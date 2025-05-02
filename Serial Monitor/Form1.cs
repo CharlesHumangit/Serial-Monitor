@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Serial_Monitor
@@ -30,6 +31,17 @@ namespace Serial_Monitor
                 cBPortName.Items.Add(port);
             }
 
+            LoadSoftwareVersion();
+
+        }
+
+        private void LoadSoftwareVersion()
+        {
+            // Get the assembly version
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            // Set the Form Title to include the version
+            this.Text = $"Serial Monitor - v{version}";
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -97,12 +109,12 @@ namespace Serial_Monitor
                     if (isTimeStamp)
                     {
                         string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Format the timestamp
-                        string timestampedData = $"{timestamp} -> {data}"; // Combine timestamp and data
+                        string timestampedData = $"{timestamp} -> {data} "; // Combine timestamp and data and add space at the end
                         richTextBoxOutput.AppendText(timestampedData); // Append the new data
                     }
                     else
                     {
-                        richTextBoxOutput.AppendText(data); // Append the new data
+                        richTextBoxOutput.AppendText(data + " "); // Append the new data with a space
                     }
 
                     if (isAutoscroll)
