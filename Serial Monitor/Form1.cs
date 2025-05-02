@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -261,6 +261,20 @@ namespace Serial_Monitor
                 richTextBoxOutput.SelectionLength = txtSearch.Text.Length;
                 richTextBoxOutput.ScrollToCaret(); // Scroll to the selected text
                 richTextBoxOutput.Focus(); // Give focus to the textbox.
+            }
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
+        {
+            if (btnFind.BackColor == Color.WhiteSmoke)
+            {
+                gBFind.Visible = true;
+                btnFind.BackColor = Color.Lime;
+            }
+            else
+            {
+                gBFind.Visible = false;
+                btnFind.BackColor = Color.WhiteSmoke;
             }
         }
     }

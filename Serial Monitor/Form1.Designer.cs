@@ -1,4 +1,4 @@
-﻿namespace Serial_Monitor
+namespace Serial_Monitor
 {
     partial class Form1
     {
@@ -40,13 +40,14 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.pnlBottomInterface = new System.Windows.Forms.Panel();
+            this.btnFind = new System.Windows.Forms.Button();
             this.btnAutoscroll = new System.Windows.Forms.Button();
             this.btnTimeStamp = new System.Windows.Forms.Button();
             this.btnClearTextBox = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.richTextBoxOutput = new System.Windows.Forms.RichTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.gBFind = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lstSearchResults = new System.Windows.Forms.ListBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -57,7 +58,7 @@
             this.groupBox4.SuspendLayout();
             this.pnlBottomInterface.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.gBFind.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -202,6 +203,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlBottomInterface.BackColor = System.Drawing.Color.DimGray;
             this.pnlBottomInterface.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlBottomInterface.Controls.Add(this.btnFind);
             this.pnlBottomInterface.Controls.Add(this.btnAutoscroll);
             this.pnlBottomInterface.Controls.Add(this.btnTimeStamp);
             this.pnlBottomInterface.Controls.Add(this.btnClearTextBox);
@@ -209,6 +211,18 @@
             this.pnlBottomInterface.Name = "pnlBottomInterface";
             this.pnlBottomInterface.Size = new System.Drawing.Size(713, 141);
             this.pnlBottomInterface.TabIndex = 4;
+            // 
+            // btnFind
+            // 
+            this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFind.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnFind.Location = new System.Drawing.Point(701, 46);
+            this.btnFind.Name = "btnFind";
+            this.btnFind.Size = new System.Drawing.Size(163, 37);
+            this.btnFind.TabIndex = 8;
+            this.btnFind.Text = "Find";
+            this.btnFind.UseVisualStyleBackColor = false;
+            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
             // 
             // btnAutoscroll
             // 
@@ -278,24 +292,25 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // groupBox5
+            // gBFind
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.gBFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.BackColor = System.Drawing.Color.DarkGray;
-            this.groupBox5.Controls.Add(this.label1);
-            this.groupBox5.Controls.Add(this.lstSearchResults);
-            this.groupBox5.Controls.Add(this.txtSearch);
-            this.groupBox5.Controls.Add(this.btnSearch);
-            this.groupBox5.Font = new System.Drawing.Font("Lucida Bright", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(970, 6);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(6, 5, 6, 5);
-            this.groupBox5.Size = new System.Drawing.Size(285, 532);
-            this.groupBox5.TabIndex = 5;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Find";
+            this.gBFind.BackColor = System.Drawing.Color.DarkGray;
+            this.gBFind.Controls.Add(this.label1);
+            this.gBFind.Controls.Add(this.lstSearchResults);
+            this.gBFind.Controls.Add(this.txtSearch);
+            this.gBFind.Controls.Add(this.btnSearch);
+            this.gBFind.Font = new System.Drawing.Font("Lucida Bright", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gBFind.Location = new System.Drawing.Point(1086, 6);
+            this.gBFind.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.gBFind.Name = "gBFind";
+            this.gBFind.Padding = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.gBFind.Size = new System.Drawing.Size(169, 532);
+            this.gBFind.TabIndex = 5;
+            this.gBFind.TabStop = false;
+            this.gBFind.Text = "Find";
+            this.gBFind.Visible = false;
             // 
             // label1
             // 
@@ -345,7 +360,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(1262, 544);
-            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.gBFind);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pnlBottomInterface);
             this.Controls.Add(this.pnlLeftInterface);
@@ -363,8 +378,8 @@
             this.groupBox4.ResumeLayout(false);
             this.pnlBottomInterface.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.gBFind.ResumeLayout(false);
+            this.gBFind.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -388,11 +403,12 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox gBFind;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ListBox lstSearchResults;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnFind;
     }
 }
 
