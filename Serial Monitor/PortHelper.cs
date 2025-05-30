@@ -83,6 +83,7 @@ namespace Serial_Monitor
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             string data = serialPort.ReadExisting();
+            //string data = serialPort.ReadLine();
 
             if (SerialDataReceived != null) // Check if there are subscribers
             {

@@ -52,6 +52,7 @@
             this.lstSearchResults = new System.Windows.Forms.ListBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.btnEnableLogging = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnlLeftInterface.SuspendLayout();
@@ -218,6 +219,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlBottomInterface.BackColor = System.Drawing.Color.DimGray;
             this.pnlBottomInterface.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlBottomInterface.Controls.Add(this.btnEnableLogging);
             this.pnlBottomInterface.Controls.Add(this.btnFind);
             this.pnlBottomInterface.Controls.Add(this.btnAutoscroll);
             this.pnlBottomInterface.Controls.Add(this.btnTimeStamp);
@@ -369,6 +371,18 @@
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // btnEnableLogging
+            // 
+            this.btnEnableLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEnableLogging.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEnableLogging.Location = new System.Drawing.Point(297, 3);
+            this.btnEnableLogging.Name = "btnEnableLogging";
+            this.btnEnableLogging.Size = new System.Drawing.Size(179, 37);
+            this.btnEnableLogging.TabIndex = 9;
+            this.btnEnableLogging.Text = "Enable Logging";
+            this.btnEnableLogging.UseVisualStyleBackColor = false;
+            this.btnEnableLogging.Click += new System.EventHandler(this.btnEnableLogging_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 22F);
@@ -425,6 +439,7 @@
         private System.Windows.Forms.ListBox lstSearchResults;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnFind;
+        private System.Windows.Forms.Button btnEnableLogging;
     }
 }
 

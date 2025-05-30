@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Serial_Monitor
@@ -100,8 +102,10 @@ namespace Serial_Monitor
 
         bool isAutoscroll;
         bool isTimeStamp;
+        StringBuilder _stringBuilder = new StringBuilder();
         public void DisplayDataReceived(string data)
         {
+            _stringBuilder.Append(data);
             try
             {
                 Invoke(new Action(() =>
@@ -114,7 +118,7 @@ namespace Serial_Monitor
                     }
                     else
                     {
-                        richTextBoxOutput.AppendText(data + " "); // Append the new data with a space
+                        richTextBoxOutput.AppendText(_stringBuilder + " "); // Append the new data with a space
                     }
 
                     if (isAutoscroll)
@@ -126,6 +130,50 @@ namespace Serial_Monitor
             catch (Exception ex)
             {
                 this.Invoke(new Action(() => richTextBoxOutput.AppendText("Error reading data: " + ex.Message)));
+            }
+
+            if (_stringBuilder.Length > 23)
+            {
+                WriteToFile(_stringBuilder.ToString());
+
+                _stringBuilder.Clear();
+            }
+        }
+
+        private bool isLoggingEnabled = false; // Initially disabled
+        /// <summary>
+        /// Writes the provided data string to a log file named "MessageLog.txt" in the application's directory.
+        /// If the file does not exist, it creates it first.
+        /// The data is appended as a new line to the end of the log file.
+        /// Includes basic error handling to catch and display any exceptions that occur during file operations.
+        /// This function is conditionally executed based on the 'isLoggingEnabled' flag;
+        /// data is only written to the file if logging is currently enabled.
+        /// </summary>
+        /// <param name="data">The string of data to write to the log file.</param>
+        private void WriteToFile(string data)
+        {
+            if (isLoggingEnabled) // Only write if logging is enabled
+            {
+                if (!File.Exists("./MessageLog.txt"))
+                {
+                    FileStream fileStream = File.Create("./MessageLog.txt");
+                    fileStream.Close();
+                }
+
+                try
+                {
+                    using (StreamWriter streamWriter = File.AppendText("./MessageLog.txt"))
+                    {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.Append(data);
+                        streamWriter.WriteLine(stringBuilder);
+                        streamWriter.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("WriteToFile", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -187,6 +235,7 @@ namespace Serial_Monitor
         {
             ConnectionState state = portHelper.UpdateConnectionStatus() ? ConnectionState.Connected : ConnectionState.Disconnected;
             UpdateConnectionStatusUI(state);
+
         }
 
         /// <summary>
@@ -287,6 +336,22 @@ namespace Serial_Monitor
             {
                 gBFind.Visible = false;
                 btnFind.BackColor = Color.WhiteSmoke;
+            }
+        }
+
+        private void btnEnableLogging_Click(object sender, EventArgs e)
+        {
+            isLoggingEnabled = !isLoggingEnabled; // Toggle the logging state
+
+            if (isLoggingEnabled)
+            {
+                btnEnableLogging.Text = "Disable Logging";
+                btnEnableLogging.BackColor = Color.LimeGreen; // Optional: Indicate enabled state
+            }
+            else
+            {
+                btnEnableLogging.Text = "Enable Logging";
+                btnEnableLogging.BackColor = SystemColors.ControlLight; // Optional: Indicate disabled state
             }
         }
     }
