@@ -40,6 +40,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.pnlBottomInterface = new System.Windows.Forms.Panel();
+            this.btnEnableLogging = new System.Windows.Forms.Button();
             this.btnFind = new System.Windows.Forms.Button();
             this.btnAutoscroll = new System.Windows.Forms.Button();
             this.btnTimeStamp = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@
             this.lstSearchResults = new System.Windows.Forms.ListBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.btnEnableLogging = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.pnlLeftInterface.SuspendLayout();
@@ -229,6 +229,17 @@
             this.pnlBottomInterface.Size = new System.Drawing.Size(872, 141);
             this.pnlBottomInterface.TabIndex = 4;
             // 
+            // btnEnableLogging
+            // 
+            this.btnEnableLogging.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnEnableLogging.Location = new System.Drawing.Point(297, 3);
+            this.btnEnableLogging.Name = "btnEnableLogging";
+            this.btnEnableLogging.Size = new System.Drawing.Size(179, 37);
+            this.btnEnableLogging.TabIndex = 9;
+            this.btnEnableLogging.Text = "Enable Logging";
+            this.btnEnableLogging.UseVisualStyleBackColor = false;
+            this.btnEnableLogging.Click += new System.EventHandler(this.btnEnableLogging_Click);
+            // 
             // btnFind
             // 
             this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -370,18 +381,6 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnEnableLogging
-            // 
-            this.btnEnableLogging.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEnableLogging.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnEnableLogging.Location = new System.Drawing.Point(297, 3);
-            this.btnEnableLogging.Name = "btnEnableLogging";
-            this.btnEnableLogging.Size = new System.Drawing.Size(179, 37);
-            this.btnEnableLogging.TabIndex = 9;
-            this.btnEnableLogging.Text = "Enable Logging";
-            this.btnEnableLogging.UseVisualStyleBackColor = false;
-            this.btnEnableLogging.Click += new System.EventHandler(this.btnEnableLogging_Click);
             // 
             // Form1
             // 

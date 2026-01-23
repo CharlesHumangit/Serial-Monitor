@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -159,15 +159,15 @@ namespace Serial_Monitor
         {
             if (isLoggingEnabled) // Only write if logging is enabled
             {
-                if (!File.Exists("./MessageLog.txt"))
+                if (!File.Exists("./Serial Monitor Weld Results.txt"))
                 {
-                    FileStream fileStream = File.Create("./MessageLog.txt");
+                    FileStream fileStream = File.Create("./Serial Monitor Weld Results.txt");
                     fileStream.Close();
                 }
 
                 try
                 {
-                    using (StreamWriter streamWriter = File.AppendText("./MessageLog.txt"))
+                    using (StreamWriter streamWriter = File.AppendText("./Serial Monitor Weld Results.txt"))
                     {
                         StringBuilder stringBuilder = new StringBuilder();
                         stringBuilder.Append(data);
