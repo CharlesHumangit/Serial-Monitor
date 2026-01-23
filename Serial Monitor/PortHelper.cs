@@ -55,9 +55,9 @@ namespace Serial_Monitor
                 serialPort.Open();
                 if (serialPort.IsOpen)
                 {
-                    Console.WriteLine($"Successfully connected to {portName}");                  
+                    Console.WriteLine($"Successfully connected to {portName}");
                     return true; // Connection successful
-                }             
+                }
             }
             catch (Exception ex)
             {
@@ -80,19 +80,52 @@ namespace Serial_Monitor
         public delegate void EventHandler(string data); // Delegate definition
         public event EventHandler SerialDataReceived; // Event declaration
 
+        private string _receiveBuffer = ""; // Buffer to hold incomplete messages
+
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string data = serialPort.ReadExisting();
-            //string data = serialPort.ReadLine();
+            // 1. Accumulate incoming data
+            string rawData = serialPort.ReadExisting();
+            _receiveBuffer += rawData;
 
-            if (SerialDataReceived != null) // Check if there are subscribers
+            char startChar = 'q';
+            char endChar = 'r';
+
+            // 2. Continuous processing loop
+            while (_receiveBuffer.Contains(startChar.ToString()) && _receiveBuffer.Contains(endChar.ToString()))
             {
-                SerialDataReceived(data);
+                int startIndex = _receiveBuffer.IndexOf(startChar);
+                int endIndex = _receiveBuffer.IndexOf(endChar);
+
+                // Safety check: If 'r' appears BEFORE 'q', it's a fragment of an old message
+                if (endIndex < startIndex)
+                {
+                    // Discard the orphaned 'r' and everything before it
+                    _receiveBuffer = _receiveBuffer.Substring(endIndex + 1);
+                    continue; // Re-check the loop
+                }
+
+                // 3. Extract the payload between 'q' and 'r'
+                // Length calculation: endIndex (pos of 'r') - startIndex (pos of 'q') - 1
+                string payload = _receiveBuffer.Substring(startIndex + 1, endIndex - startIndex - 1);
+
+                // 4. Clean up the message
+                // This removes the carriage return (\r) as requested
+                string cleanedMessage = payload.Replace("\r", "");
+
+                // 5. Convey to UI
+                if (SerialDataReceived != null)
+                {
+                    SerialDataReceived(cleanedMessage);
+                }
+
+                // 6. Clear processed data from buffer (up to and including the 'r')
+                _receiveBuffer = _receiveBuffer.Substring(endIndex + 1);
             }
         }
 
         public bool UpdateConnectionStatus()
-        {            
+        {
             return serialPort.IsOpen;
         }
     }
