@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 
 namespace Serial_Monitor
 {
@@ -114,11 +115,14 @@ namespace Serial_Monitor
                     {
                         string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Format the timestamp
                         string timestampedData = $"{timestamp} -> {data} "; // Combine timestamp and data and add space at the end
-                        richTextBoxOutput.AppendText(timestampedData); // Append the new data
+                        richTextBoxOutput.AppendText(timestampedData + Environment.NewLine); // Append the new data with a new line
                     }
                     else
                     {
-                        richTextBoxOutput.AppendText(_stringBuilder + " "); // Append the new data with a space
+                        //richTextBoxOutput.AppendText(_stringBuilder + " "); // Append the new data with a space
+
+                        // Append only the new data received to new line
+                        richTextBoxOutput.AppendText(_stringBuilder + Environment.NewLine);
                     }
 
                     if (isAutoscroll)
@@ -132,9 +136,10 @@ namespace Serial_Monitor
                 this.Invoke(new Action(() => richTextBoxOutput.AppendText("Error reading data: " + ex.Message)));
             }
 
-            if (_stringBuilder.Length > 23)
+            if (_stringBuilder.Length > 44)
             {
-                WriteToFile(_stringBuilder.ToString());
+                //WriteToFile(_stringBuilder.ToString());
+                SaveToExcel(_stringBuilder.ToString());
 
                 _stringBuilder.Clear();
             }
@@ -175,6 +180,102 @@ namespace Serial_Monitor
                     MessageBox.Show("WriteToFile", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        double number;
+
+        private void SaveToExcel(string cleanedData)
+        {
+            if (!isLoggingEnabled) return;
+
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WeldResults.xlsx");
+
+            // Safety check: Don't crash if the file is open
+            if (IsFileLocked(new FileInfo(filePath)))
+            {
+                richTextBoxOutput.Invoke(new Action(() =>
+                    richTextBoxOutput.AppendText("\r\n[Error] Excel file is open! Close it to save data.\r\n")));
+                return;
+            }
+
+            try
+            {
+                using (var workbook = File.Exists(filePath) ? new XLWorkbook(filePath) : new XLWorkbook())
+                {
+                    // Get or create the worksheet
+                    var worksheet = workbook.Worksheets.Count > 0
+                        ? workbook.Worksheet(1)
+                        : workbook.Worksheets.Add("Weld Data");
+
+                    // 1. SETUP HEADERS (Only runs if the sheet is empty)
+                    if (worksheet.LastRowUsed() == null)
+                    {
+                        string[] headers = {
+                    "Weld Energy (J)", "Max Power (W)", "Power (W)",
+                    "Weld Time (ms)", "Power Loss (W)", "Frequency (Hz)",
+                    "Status 1", "Status 2", "Weld Count"
+                };
+
+                        for (int i = 0; i < headers.Length; i++)
+                        {
+                            worksheet.Cell(1, i + 1).Value = headers[i];
+                            worksheet.Cell(1, i + 1).Style.Font.Bold = true; // Make headers bold
+                        }
+                    }
+
+                    // 2. PARSE THE DATA
+                    // Split the "cleanedData" string wherever there is a comma
+                    string[] values = cleanedData.Split(',');
+
+                    // Find the next empty row
+                    int nextRow = worksheet.LastRowUsed()?.RowNumber() + 1 ?? 1;
+
+                    // 3. WRITE DATA TO CELLS
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        // Declare the variable OUTSIDE the TryParse function
+                        double number;
+
+                        // Now simply use "out number" instead of "out double number"
+                        if (double.TryParse(values[i], out number))
+                        {
+                            worksheet.Cell(nextRow, i + 1).Value = number;
+                        }
+                        else
+                        {
+                            worksheet.Cell(nextRow, i + 1).Value = values[i];
+                        }
+                    }
+
+                    // Optional: Auto-fit columns to make it look nice
+                    worksheet.Columns().AdjustToContents();
+
+                    workbook.SaveAs(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                richTextBoxOutput.Invoke(new Action(() =>
+                    richTextBoxOutput.AppendText($"\r\n[Error] Save failed: {ex.Message}\r\n")));
+            }
+        }
+
+        // Keep the IsFileLocked helper from before
+        private bool IsFileLocked(FileInfo file)
+        {
+            if (!file.Exists) return false;
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            return false;
         }
 
         private void btnAutoscroll_Click(object sender, EventArgs e)
