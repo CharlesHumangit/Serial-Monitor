@@ -401,3 +401,12 @@ FodyWeavers.xsd
 
 # ignore all files in the obj/Debug folder
 Serial Monitor/obj/Debug/*
+
+# ignore all files in the obj/Release folder
+Serial Monitor/obj/Release/*
+
+# ignore Visual Studio Code settings folder
+.vscode/
+
+# ignore all files in the Bin folder
+Serial Monitor/bin/
